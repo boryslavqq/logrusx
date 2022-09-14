@@ -18,7 +18,7 @@ type logger struct {
 
 // Create a new logger with JSON configuration and custom service name,
 // returns error if service name is invalid
-func New(serviceName string) (*logger, error) {
+func New(serviceName string) (Logging, error) {
 	fieldMap := logrus.FieldMap{}
 	fieldMap[logrus.FieldKeyMsg] = "message"
 
@@ -40,8 +40,8 @@ func New(serviceName string) (*logger, error) {
 
 type Logging interface {
 	Info(msg string)
-	Error(msg string)
-	Fatal(msg string)
+	Error(msg string, fields ...LogField)
+	Fatal(msg string, fields ...LogField)
 	addValue(key string, value interface{})
 	deleteValue(key string)
 	fillFields(fields []LogField)
