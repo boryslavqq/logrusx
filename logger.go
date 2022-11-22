@@ -48,7 +48,10 @@ type Logging interface {
 	deleteFields(fields []LogField)
 }
 
-func (l *logger) Info(msg string) {
+func (l *logger) Info(msg string, fields ...LogField) {
+	defer l.deleteFields(fields)
+
+	l.fillFields(fields)
 	l.logrusLogging.WithFields(l.fields).Info(msg)
 }
 
