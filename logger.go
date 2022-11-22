@@ -39,7 +39,7 @@ func New(serviceName string) (Logging, error) {
 }
 
 type Logging interface {
-	Info(msg string)
+	Info(msg string, fields ...LogField)
 	Error(msg string, fields ...LogField)
 	Fatal(msg string, fields ...LogField)
 	addValue(key string, value interface{})
