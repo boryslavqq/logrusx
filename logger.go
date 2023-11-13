@@ -2,8 +2,9 @@ package logrusx
 
 import (
 	"errors"
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 type LogField struct {
@@ -40,6 +41,7 @@ func New(serviceName string) (Logging, error) {
 
 type Logging interface {
 	Info(msg string, fields ...LogField)
+	Debug(msg string, fields ...LogField)
 	Error(msg string, fields ...LogField)
 	Fatal(msg string, fields ...LogField)
 	addValue(key string, value interface{})
@@ -53,6 +55,13 @@ func (l *logger) Info(msg string, fields ...LogField) {
 
 	l.fillFields(fields)
 	l.logrusLogging.WithFields(l.fields).Info(msg)
+}
+
+func (l *logger) Debug(msg string, fields ...LogField) {
+	defer l.deleteFields(fields)
+
+	l.fillFields(fields)
+	l.logrusLogging.WithFields(l.fields).Debug(msg)
 }
 
 func (l *logger) Error(msg string, fields ...LogField) {
